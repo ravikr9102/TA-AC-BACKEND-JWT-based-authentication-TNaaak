@@ -5,12 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-
 // connect to database
 mongoose.connect('mongodb://localhost:27017/api-authentication', (err) => {
   console.log(err ? err : 'Connected to database');
 });
-
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
