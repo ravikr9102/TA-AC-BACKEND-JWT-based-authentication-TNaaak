@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
-require('dotenv').config()
+require('dotenv').config();
 
 const userSchema = new Schema(
   {
-    username: { type: String, required: true, unique: true},
+    username: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, minlength: 5, required: true },
     token: { type: String },
     bio: { type: String },
     image: { type: String },
-    articles: [{ type: Schema.Types.ObjectId, ref: "Article" }], 
-    favorites: [{ type: Schema.Types.ObjectId, ref: "Article" }],
+    articles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   { timestamps: true }
 );
@@ -46,26 +46,26 @@ userSchema.methods.verifyPassword = async function (password) {
 };
 
 // Method for signing the token
-userSchema.methods.signToken = async function(){
-    console.log(this);
-    var payload = { userId: this.id, email: this.email};
-    try{
-        var token = await jwt.sign(payload, process.env.SECRET);
-        return token;
-    } catch (error) {
-        return error;
-    }
-}
+userSchema.methods.signToken = async function () {
+  console.log(this);
+  var payload = { userId: this.id, email: this.email };
+  try {
+    var token = await jwt.sign(payload, process.env.SECRET);
+    return token;
+  } catch (error) {
+    return error;
+  }
+};
 // Method to make userJSON data
-userSchema.methods.userJSON = function(token){
-    return {
-        username: this.username,
-        email: this.email,
-        bio: this.bio,
-        image: this.image,
-        token: token
-    }
-}
+userSchema.methods.userJSON = function (token) {
+  return {
+    username: this.username,
+    email: this.email,
+    bio: this.bio,
+    image: this.image,
+    token: token,
+  };
+};
 
 // // Method to display User
 // userSchema.methods.displayUser = function (id = null) {

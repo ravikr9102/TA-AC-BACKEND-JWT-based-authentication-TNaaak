@@ -7,8 +7,8 @@ const User = require('../models/User');
 router.post('/register', async (req, res, next) => {
   try {
     const user = await User.create(req.body);
-    const token = await user.signToken()
-    res.status(201).json({ user: user.userJSON(token)});
+    const token = await user.signToken();
+    res.status(201).json({ user: user.userJSON(token) });
   } catch (error) {
     next(error);
   }
@@ -16,11 +16,11 @@ router.post('/register', async (req, res, next) => {
 
 // login handler
 router.post('/login', async (req, res, next) => {
-  try{
+  try {
     let { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email/password required' });
-  }
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email/password required' });
+    }
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: 'Email not registered' });
@@ -31,20 +31,20 @@ router.post('/login', async (req, res, next) => {
     }
     var token = await user.signToken();
     console.log(token);
-    res.json({ user: user.userJSON(token)});
+    res.json({ user: user.userJSON(token) });
   } catch (error) {
     next(error);
   }
 });
 
-router.post ('/allUsers', async ( req, res, next ) => {
+router.post('/allUsers', async (req, res, next) => {
   try {
-      const user = await User.find();
-      console.log(user);
-      res.status(200).json({ user: user })
+    const user = await User.find();
+    console.log(user);
+    res.status(200).json({ user: user });
   } catch (error) {
-      return next ( error )
+    return next(error);
   }
-}); 
+});
 
 module.exports = router;
